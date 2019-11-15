@@ -96,24 +96,20 @@ private:
     void copy(const custom_container &other) {
         if (other.is_empty())
             return;
-        auto other_node = other.first_node;
-        while (other_node) {
-            auto node = this->allocator.allocate(1);
-            node->value = other_node->value;
-            this->push_back(node);
-            other_node = other_node->next;
+        auto node = other.first_node;
+        while (node) {
+            this->emplace(node->value);
+            node = node->next;
         }
     }
 
     void move(custom_container && other) {
         if (other.is_empty())
             return;
-        auto other_node = other.first_node;
-        while (other_node) {
-            auto node = this->allocator.allocate(1);
-            node->value = std::move(other_node->value);
-            this->push_back(node);
-            other_node = other_node->next;
+        auto node = other.first_node;
+        while (node) {
+            this->emplace(std::move(node->value));
+            node = node->next;
         }
     }
 };
