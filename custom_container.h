@@ -5,6 +5,8 @@
 template <typename T, typename Allocator = std::allocator<T>>
 class custom_container {
     struct container_node {
+        template <typename ... Args>
+        container_node(Args && ...args): next(nullptr), value(args...) { }
         container_node* next = nullptr;
         T value;
     };
@@ -75,7 +77,7 @@ public:
     template<typename ... Args>
     void emplace(Args && ... args) {
         auto node = this->allocator.allocate(1);
-        this->allocator.construct(&node->value, std::forward<Args>(args)...);
+        this->allocator.construct(node, std::forward<Args>(args)...);
         this->push_back(node);
     }
 
