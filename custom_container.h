@@ -47,7 +47,8 @@ public:
         this->copy(other);
     }
 
-    custom_container(custom_container && other) noexcept : first_node(other.first_node), last_node(other.last_node) {
+    custom_container(custom_container && other) noexcept : allocator(std::move(other.allocator)),
+                                                           first_node(other.first_node), last_node(other.last_node) {
         other.first_node = nullptr;
     }
 
